@@ -127,7 +127,8 @@ color: var(--green);
     background: #eee;
     color: var(--black);
     font-size: 2rem;
-    margin-right: .3rem;
+    margin-right: .5rem;
+    margin-left: .5rem;
     text-align: center;
     cursor: pointer;
 }
@@ -677,3 +678,30 @@ color: var(--green);
         text-align: center;
     }
 }
+
+.cart-icon {
+    position: relative;
+    font-size: 24px;
+    color: #333;
+    text-decoration: none;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background: red;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+}
+
+
+

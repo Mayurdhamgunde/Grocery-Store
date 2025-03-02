@@ -81,3 +81,81 @@ var swiper = new Swiper(".product-slider", {
         });
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+  updateCartBadge();
+  loadCart();
+  
+  document.querySelectorAll(".add-to-cart").forEach(button => {
+      button.addEventListener("click", function () {
+          let name = this.getAttribute("data-name");
+          let price = Number(this.getAttribute("data-price"));
+          addToCart(name, price);
+      });
+  });
+});
+
+function addToCart(name, price) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push({ name, price });
+  localStorage.setItem("cart", JSON.stringify(cart));
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let badge = document.getElementById("cart-badge");
+
+  if (cart.length > 0) {
+      badge.innerText = cart.length;
+      badge.style.visibility = "visible"; 
+  } else {
+      badge.style.visibility = "hidden"; 
+  }
+}
+
+function loadCart() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cartItemsContainer = document.getElementById("cart-items");
+  let totalElement = document.getElementById("cart-total");
+  cartItemsContainer.innerHTML = "";
+  
+  let total = 0;
+
+  if (cart.length === 0) {
+      cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+      totalElement.innerText = "Total: $0";
+      return;
+  }
+
+  cart.forEach((item, index) => {
+      total += Number(item.price);
+
+      let div = document.createElement("div");
+      div.classList.add("cart-item");
+      div.innerHTML = `
+          <h2>${item.name} - $${item.price}</h2>
+          <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+      `;
+      cartItemsContainer.appendChild(div);
+  });
+
+  totalElement.innerText = `Total: $${total}`;
+}
+
+function removeItem(index) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.splice(index, 1);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  loadCart();
+  updateCartBadge();
+}
+
+function clearCart() {
+  localStorage.removeItem("cart");
+  loadCart();
+  updateCartBadge();
+}
+
+function continueShopping() {
+  window.location.href = "index.html";
+}
